@@ -8,9 +8,7 @@ export function Footer() {
       <div className="container-x">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="flex items-center gap-3">
-            <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center text-sm font-bold">
-              P
-            </span>
+            <img src="/logo-mark.png" alt="PnL Profit" width={34} height={34} className="w-[34px] h-[34px] object-contain" />
             <div>
               <div className="font-bold text-white">{t.footer.productName}</div>
               <div className="text-xs text-zinc-500">{t.footer.tagline}</div>
