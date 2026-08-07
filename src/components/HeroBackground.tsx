@@ -8,12 +8,14 @@ export function HeroBackground() {
 
   useEffect(() => {
     const canvas = ref.current;
-    const ctx = canvas?.getContext('2d');
-    if (!canvas || !ctx) return;
+    const context = canvas?.getContext('2d');
+    if (!canvas || !context) return;
+    const el = canvas; // non-null aliases (closures below lose narrowing otherwise)
+    const g = context;
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const parent = canvas.parentElement as HTMLElement;
+    const parent = el.parentElement as HTMLElement;
 
     const GREENS = ['#22c55e', '#4ade80', '#86efac', '#16a34a'];
     const pick = () => GREENS[(Math.random() * GREENS.length) | 0];
@@ -28,11 +30,11 @@ export function HeroBackground() {
     function build() {
       W = parent.clientWidth || window.innerWidth;
       H = parent.clientHeight || 640;
-      canvas.width = W * dpr;
-      canvas.height = H * dpr;
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      el.width = W * dpr;
+      el.height = H * dpr;
+      el.style.width = W + 'px';
+      el.style.height = H + 'px';
+      g.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       const n = Math.max(28, Math.min(72, Math.round((W * H) / 20000)));
       dots = Array.from({ length: n }, () => ({
@@ -57,7 +59,7 @@ export function HeroBackground() {
 
     const mouse = { x: -9999, y: -9999 };
     const onMove = (e: MouseEvent) => {
-      const b = canvas.getBoundingClientRect();
+      const b = el.getBoundingClientRect();
       mouse.x = e.clientX - b.left;
       mouse.y = e.clientY - b.top;
     };
@@ -68,7 +70,7 @@ export function HeroBackground() {
 
     function frame() {
       t += 0.016;
-      ctx.clearRect(0, 0, W, H);
+      g.clearRect(0, 0, W, H);
 
       // bonds — form & break as dots drift (combine / split)
       for (let i = 0; i < dots.length; i++) {
@@ -79,12 +81,12 @@ export function HeroBackground() {
           const dy = p.y - q.y;
           const d = Math.hypot(dx, dy);
           if (d < MAXD) {
-            ctx.strokeStyle = `rgba(52,211,153,${(1 - d / MAXD) * 0.45})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(q.x, q.y);
-            ctx.stroke();
+            g.strokeStyle = `rgba(52,211,153,${(1 - d / MAXD) * 0.45})`;
+            g.lineWidth = 1;
+            g.beginPath();
+            g.moveTo(p.x, p.y);
+            g.lineTo(q.x, q.y);
+            g.stroke();
           }
         }
       }
@@ -107,36 +109,36 @@ export function HeroBackground() {
           p.x = Math.max(0, Math.min(W, p.x));
           p.y = Math.max(0, Math.min(H, p.y));
         }
-        ctx.beginPath();
-        ctx.fillStyle = p.c;
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
+        g.beginPath();
+        g.fillStyle = p.c;
+        g.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        g.fill();
       }
 
       // atoms — nucleus + orbiting electrons (chemical-structure motif)
       for (const a of atoms) {
-        ctx.beginPath();
-        ctx.fillStyle = 'rgba(74,222,128,0.95)';
-        ctx.arc(a.x, a.y, 2.6, 0, Math.PI * 2);
-        ctx.fill();
+        g.beginPath();
+        g.fillStyle = 'rgba(74,222,128,0.95)';
+        g.arc(a.x, a.y, 2.6, 0, Math.PI * 2);
+        g.fill();
         for (let k = 0; k < a.e; k++) {
           const rot = a.rot + k * 0.9;
           const cos = Math.cos(rot);
           const sin = Math.sin(rot);
-          ctx.strokeStyle = 'rgba(34,197,94,0.14)';
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.ellipse(a.x, a.y, a.rx, a.ry, rot, 0, Math.PI * 2);
-          ctx.stroke();
+          g.strokeStyle = 'rgba(34,197,94,0.14)';
+          g.lineWidth = 1;
+          g.beginPath();
+          g.ellipse(a.x, a.y, a.rx, a.ry, rot, 0, Math.PI * 2);
+          g.stroke();
           const ang = a.phase + t * (0.5 + 0.18 * k) + (k * Math.PI * 2) / a.e;
           const ex = Math.cos(ang) * a.rx;
           const ey = Math.sin(ang) * a.ry;
           const px = a.x + ex * cos - ey * sin;
           const py = a.y + ex * sin + ey * cos;
-          ctx.beginPath();
-          ctx.fillStyle = '#86efac';
-          ctx.arc(px, py, 1.7, 0, Math.PI * 2);
-          ctx.fill();
+          g.beginPath();
+          g.fillStyle = '#86efac';
+          g.arc(px, py, 1.7, 0, Math.PI * 2);
+          g.fill();
         }
       }
 
