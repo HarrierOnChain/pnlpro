@@ -264,13 +264,13 @@ const messages: Record<Lang, Messages> = {
       cta: 'Join the early-access waitlist',
     },
     hero: {
-      badge: '10 strategies · one battle-tested engine',
-      headlineLine1: 'Prediction markets,',
-      headlineLine2: 'traded at machine speed.',
+      badge: 'Managed & copy-trading · paper early access',
+      headlineLine1: 'Copy proven traders.',
+      headlineLine2: 'Profit on autopilot.',
       description: ({ polymarket, kalshi, limitless }) => (
         <>
-          Ten production-grade Rust trading bots for {polymarket}, {kalshi}, and {limitless}.
-          {' '}Copy trading, cross-venue arb, whale signals, market making — all sharing one risk layer, one execution core.
+          PnL Profit runs the bots for you. Pick a proven wallet from the live on-chain leaderboard — or a strategy — and hosted bots mirror it across {polymarket}, {kalshi} and {limitless}.
+          {' '}Copy trading, cross-venue arbitrage, market making — one risk layer, one dashboard. Paper-trading early access.
         </>
       ),
       ctaTelegram: 'Open the App',
@@ -621,13 +621,13 @@ const messages: Record<Lang, Messages> = {
       cta: '加入抢先体验候补名单',
     },
     hero: {
-      badge: '十款策略 · 同一套久经实战的引擎',
-      headlineLine1: '预测市场，',
-      headlineLine2: '以机器速度交易。',
+      badge: '托管与跟单交易 · 纸面抢先体验',
+      headlineLine1: '跟单已被验证的赢家，',
+      headlineLine2: '让盈利自动运行。',
       description: ({ polymarket, kalshi, limitless }) => (
         <>
-          面向 {polymarket}、{kalshi}、{limitless} 三家预测市场打造的十款生产级 Rust 交易机器人。
-          跟单交易、跨平台套利、鲸鱼信号、做市商——共享同一套风控层与执行核心。
+          PnL Profit 替你运行机器人。从实时链上排行榜挑一位已被验证的钱包——或一个策略——托管机器人便会在 {polymarket}、{kalshi} 与 {limitless} 上为你镜像。
+          跟单交易、跨平台套利、做市——同一套风控、同一个仪表盘。纸面交易抢先体验。
         </>
       ),
       ctaTelegram: '打开应用',
@@ -976,13 +976,13 @@ const messages: Record<Lang, Messages> = {
       cta: 'Встать в список раннего доступа',
     },
     hero: {
-      badge: '10 стратегий · один проверенный в бою движок',
-      headlineLine1: 'Рынки предсказаний —',
-      headlineLine2: 'торговля на скорости машины.',
+      badge: 'Управляемый сервис и копи-трейдинг · ранний доступ (бумага)',
+      headlineLine1: 'Копируйте тех, кто выигрывает,',
+      headlineLine2: 'прибыль на автопилоте.',
       description: ({ polymarket, kalshi, limitless }) => (
         <>
-          Десять торговых ботов на Rust производственного уровня для {polymarket}, {kalshi} и {limitless}.
-          {' '}Копи-трейдинг, межплощадочный арбитраж, сигналы китов, маркет-мейкинг — всё на одном слое риска и одном ядре исполнения.
+          PnL Profit запускает ботов за вас. Выберите проверенный кошелёк из живого ончейн-рейтинга — или стратегию — и хостинговые боты зеркалят его на {polymarket}, {kalshi} и {limitless}.
+          {' '}Копи-трейдинг, межплощадочный арбитраж, маркет-мейкинг — один слой риска, одна панель. Ранний доступ на бумаге.
         </>
       ),
       ctaTelegram: 'Открыть приложение',
