@@ -1,63 +1,98 @@
 import { APP_URL, GITHUB_URL } from '../bots';
 import { useT } from '../messages';
-import { HeroBackground } from './HeroBackground';
 
 export function Hero() {
   const t = useT();
   return (
-    <section id="top" className="relative pt-20 pb-24 overflow-hidden">
-      <HeroBackground />
-      <div className="container-x relative">
-        <div className="flex flex-col items-center text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-medium text-green-300 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            {t.hero.badge}
+    <section
+      id="top"
+      className="relative -mt-16 flex min-h-[92vh] flex-col overflow-hidden"
+    >
+      {/* full-bleed banner video */}
+      <video
+        className="absolute inset-0 -z-20 h-full w-full object-cover"
+        src="/banner.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden
+      />
+
+      {/* legibility + brand overlays */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-bg-base via-bg-base/55 to-bg-base/25" aria-hidden />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-bg-base/90 via-bg-base/35 to-transparent" aria-hidden />
+      <div className="absolute inset-x-0 -bottom-1 -z-10 h-40 bg-gradient-to-t from-bg-base to-transparent" aria-hidden />
+      <div className="pointer-events-none absolute -left-40 top-1/3 -z-10 h-[520px] w-[520px] rounded-full bg-green-500/15 blur-[130px]" aria-hidden />
+
+      {/* content — anchored bottom-left, cinematic */}
+      <div className="container-x relative flex flex-1 flex-col justify-end pb-14 pt-28">
+        <div className="max-w-3xl">
+          <div className="mb-6 flex flex-wrap items-center gap-3 text-xs font-medium">
+            <span className="inline-flex items-center gap-2 rounded-full border border-green-500/25 bg-green-500/10 px-3 py-1.5 text-green-300 backdrop-blur-sm">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
+              {t.hero.badge}
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-zinc-200 backdrop-blur-sm">
+              <span className="text-brand-polymarket">Polymarket</span>
+              <span className="text-zinc-600">·</span>
+              <span className="text-brand-kalshi">Kalshi</span>
+              <span className="text-zinc-600">·</span>
+              <span className="text-brand-limitless">Limitless</span>
+            </span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.05] max-w-5xl">
+          <h1 className="text-5xl font-extrabold leading-[1.03] tracking-tight drop-shadow-[0_2px_20px_rgba(0,0,0,0.6)] md:text-7xl">
             {t.hero.headlineLine1}
             <br />
             <span className="gradient-text">{t.hero.headlineLine2}</span>
           </h1>
 
-          <p className="mt-6 text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300 md:text-xl">
             {t.hero.description({
-              polymarket: <span className="text-brand-polymarket font-semibold">Polymarket</span>,
-              kalshi: <span className="text-brand-kalshi font-semibold">Kalshi</span>,
-              limitless: <span className="text-brand-limitless font-semibold">Limitless</span>,
+              polymarket: <span className="font-semibold text-brand-polymarket">Polymarket</span>,
+              kalshi: <span className="font-semibold text-brand-kalshi">Kalshi</span>,
+              limitless: <span className="font-semibold text-brand-limitless">Limitless</span>,
             })}
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <a href={APP_URL} className="btn-primary text-base px-6 py-3">
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <a href={APP_URL} className="btn-primary px-6 py-3 text-base">
               <span>{t.hero.ctaTelegram}</span>
               <ArrowIcon />
             </a>
-            <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="btn-secondary text-base px-6 py-3">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="btn-secondary px-6 py-3 text-base backdrop-blur-sm"
+            >
               <GitHubIcon />
               <span>{t.hero.ctaGithub}</span>
             </a>
           </div>
-
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-px bg-border-subtle rounded-2xl overflow-hidden max-w-4xl w-full">
-            {t.hero.stats.map((stat) => (
-              <Stat key={stat.label} label={stat.label} value={stat.value} unit={stat.unit} />
-            ))}
-          </div>
         </div>
       </div>
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-500/10 rounded-full blur-[120px] -z-20 pointer-events-none" />
+      {/* stats strip along the bottom edge of the banner */}
+      <div className="relative border-t border-white/10 bg-bg-base/50 backdrop-blur-md">
+        <div className="container-x grid grid-cols-2 divide-white/5 md:grid-cols-4 md:divide-x">
+          {t.hero.stats.map((stat) => (
+            <Stat key={stat.label} label={stat.label} value={stat.value} unit={stat.unit} />
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
 
 function Stat({ label, value, unit }: { label: string; value: string; unit: string }) {
   return (
-    <div className="bg-bg-surface p-5 text-left">
-      <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">{label}</div>
+    <div className="px-5 py-5 text-left">
+      <div className="text-xs font-medium uppercase tracking-wider text-zinc-500">{label}</div>
       <div className="mt-2 flex items-baseline gap-1.5">
-        <span className="text-2xl md:text-3xl font-bold font-mono text-white">{value}</span>
+        <span className="font-mono text-2xl font-bold text-white md:text-3xl">{value}</span>
         <span className="text-xs text-zinc-500">{unit}</span>
       </div>
     </div>
