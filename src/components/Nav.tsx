@@ -8,7 +8,7 @@ export function Nav() {
     <header className="sticky top-0 z-50 backdrop-blur-lg bg-bg-base/70 border-b border-border-subtle">
       <nav className="container-x flex items-center justify-between h-16">
         <a href="#top" className="flex items-center gap-2 font-bold tracking-tight">
-          <img src="/logo-mark.png" alt="PnL Profit" width={32} height={32} className="w-8 h-8 rounded-lg bg-white" />
+          <img src="/logo-mark.png" alt="PnL Profit" width={34} height={34} className="w-[34px] h-[34px] object-contain" />
           <span>PnL Profit</span>
         </a>
 
