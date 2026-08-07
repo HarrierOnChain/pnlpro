@@ -1,10 +1,12 @@
 import { APP_URL, GITHUB_URL } from '../bots';
 import { useT } from '../messages';
+import { HeroBackground } from './HeroBackground';
 
 export function Hero() {
   const t = useT();
   return (
     <section id="top" className="relative pt-20 pb-24 overflow-hidden">
+      <HeroBackground />
       <div className="container-x relative">
         <div className="flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-medium text-green-300 mb-6">
@@ -45,7 +47,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-500/10 rounded-full blur-[120px] -z-10 pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-green-500/10 rounded-full blur-[120px] -z-20 pointer-events-none" />
     </section>
   );
 }
