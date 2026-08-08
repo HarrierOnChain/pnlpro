@@ -1,5 +1,5 @@
 import { TELEGRAM_URL, GITHUB_URL } from '../bots';
-import { useT } from '../messages';
+import { useT, interp } from '../messages';
 
 export function Footer() {
   const t = useT();
@@ -27,7 +27,7 @@ export function Footer() {
         <div className="mt-10 pt-6 border-t border-border-subtle">
           <p className="text-xs text-zinc-500 leading-relaxed max-w-4xl">
             <span className="font-semibold text-zinc-400">{t.footer.disclaimerLabel}</span>
-            {t.footer.disclaimer({
+            {interp(t.footer.disclaimer, {
               flag: <code className="mx-1 px-1.5 py-0.5 bg-bg-elevated rounded text-zinc-300 font-mono text-[11px]">enable_trading: false</code>,
             })}
           </p>

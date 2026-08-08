@@ -4,7 +4,7 @@ import {
   CandlestickSeries,
   type UTCTimestamp,
 } from 'lightweight-charts';
-import { useT } from '../messages';
+import { useT, interp } from '../messages';
 
 const SYMBOL = 'btcusdt';
 const INTERVAL = '1m';
@@ -198,7 +198,7 @@ export function LiveSignalSection() {
 
         <div className="mt-5 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 text-xs text-zinc-500 max-w-4xl">
           <p className="leading-relaxed">
-            {t.liveSignal.footnote({
+            {interp(t.liveSignal.footnote, {
               source: <span className="text-zinc-400">Binance spot WebSocket</span>,
               chainlink: <span className="text-zinc-400">Chainlink price feeds</span>,
             })}

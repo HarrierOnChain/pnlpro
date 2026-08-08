@@ -6,7 +6,7 @@
 // caught, logged, and the script exits 0 leaving the normal SPA build in place —
 // it can never break the deploy.
 import { createServer } from 'node:http';
-import { readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -58,13 +58,28 @@ async function main() {
   try {
     browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    // Wait until the React app has rendered real content (footer contact section).
-    await page.waitForSelector('#contact', { timeout: 20000 });
-    const html = await page.content();
-    if (!html.includes('id="contact"')) throw new Error('rendered HTML missing expected content');
-    await writeFile(join(DIST, 'index.html'), html);
-    console.log(`[prerender] snapshotted dist/index.html (${html.length} bytes)`);
+    // Render every locale to its own static page (SEO: /es/, /ja/ … + hreflang).
+    // English is rendered LAST so dist/index.html stays the clean build until then.
+    const LOCALES = ['zh', 'ru', 'es', 'pt', 'fr', 'de', 'it', 'tr', 'vi', 'ja', 'ko', 'ar', 'en'];
+    const HTMLLANG = { zh: 'zh-CN', pt: 'pt-BR' };
+    for (const code of LOCALES) {
+      const target = code === 'en' ? url : `${url}?lang=${code}`;
+      await page.goto(target, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForSelector('#contact', { timeout: 20000 }); // full render done
+      let html = await page.content();
+      if (!html.includes('id="contact"')) throw new Error(`rendered HTML missing content for ${code}`);
+      // per-locale <html lang/dir>, canonical, og:url
+      const htmlLang = HTMLLANG[code] || code;
+      const dirAttr = code === 'ar' ? ' dir="rtl"' : '';
+      html = html.replace(/<html[^>]*>/i, `<html lang="${htmlLang}"${dirAttr}>`);
+      const locUrl = code === 'en' ? 'https://pnlpro.fit/' : `https://pnlpro.fit/${code}/`;
+      html = html.replace(/<link rel="canonical"[^>]*>/i, `<link rel="canonical" href="${locUrl}" />`);
+      html = html.replace(/<meta property="og:url"[^>]*>/i, `<meta property="og:url" content="${locUrl}" />`);
+      const outDir = code === 'en' ? DIST : join(DIST, code);
+      if (code !== 'en') await mkdir(outDir, { recursive: true });
+      await writeFile(join(outDir, 'index.html'), html);
+      console.log(`[prerender] ${code} -> ${code === 'en' ? 'dist/index.html' : 'dist/' + code + '/index.html'} (${html.length} bytes)`);
+    }
   } finally {
     if (browser) await browser.close();
     server.close();

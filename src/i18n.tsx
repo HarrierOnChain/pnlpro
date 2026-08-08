@@ -40,24 +40,44 @@ interface LangContextValue {
 }
 const LangContext = createContext<LangContextValue | null>(null);
 
+const langFromPath = (): Lang | null => {
+  if (typeof window === 'undefined') return null;
+  const seg = window.location.pathname.split('/').filter(Boolean)[0];
+  return isLang(seg) ? seg : null;
+};
+
+// The URL PATH is authoritative, so the rendered language always matches the
+// (prerendered) page — clean for SEO and no hydration flash. Stored/browser
+// preference is applied via a redirect from the root, not by overriding render.
 function detectInitialLang(): Lang {
   if (typeof window === 'undefined') return 'en';
-  // 1) explicit ?lang= (SEO / share links) 2) stored choice 3) browser language
   try {
-    const q = new URLSearchParams(window.location.search).get('lang');
+    const fromPath = langFromPath();
+    if (fromPath) return fromPath;
+    const q = new URLSearchParams(window.location.search).get('lang'); // legacy links
     if (isLang(q)) return q;
+  } catch {
+    /* ignore */
+  }
+  return 'en';
+}
+
+// Preferred locale from a returning visitor (stored) or their browser.
+function preferredLang(): Lang | null {
+  try {
     const stored = window.localStorage.getItem('lang');
     if (isLang(stored)) return stored;
   } catch {
-    /* storage may be blocked */
+    /* ignore */
   }
   if (typeof navigator !== 'undefined') {
     const b = (navigator.language ?? '').toLowerCase();
     const hit = CODES.find((c) => b === c || b.startsWith(c + '-'));
     if (hit) return hit;
   }
-  return 'en';
+  return null;
 }
+const pathFor = (code: Lang) => (code === 'en' ? '/' : `/${code}/`);
 
 export function LangProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>(detectInitialLang);
@@ -70,7 +90,34 @@ export function LangProvider({ children }: { children: ReactNode }) {
     } catch {
       /* ignore */
     }
+    // Reflect the locale in the URL path (/es/, /ja/, / for English) so it's
+    // shareable and matches the prerendered per-locale page — client-side, no reload.
+    try {
+      const target = pathFor(next);
+      if (window.location.pathname !== target) window.history.pushState(null, '', target);
+    } catch {
+      /* ignore */
+    }
   };
+
+  // Returning/browser-preferred visitor landing on the root → their locale page.
+  // (Crawlers have no stored pref and en browser lang, so they stay on /.)
+  useEffect(() => {
+    try {
+      if (langFromPath() || new URLSearchParams(window.location.search).get('lang')) return;
+      const pref = preferredLang();
+      if (pref && pref !== 'en' && window.location.pathname === '/') window.location.replace(pathFor(pref));
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  // Back/forward navigation between /es/, /ja/, / …
+  useEffect(() => {
+    const onPop = () => setLangState(langFromPath() ?? 'en');
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   useEffect(() => {
     if (typeof document !== 'undefined') {

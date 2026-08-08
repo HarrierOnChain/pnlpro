@@ -1,5 +1,5 @@
 import { APP_URL, GITHUB_URL } from '../bots';
-import { useT } from '../messages';
+import { useT, interp } from '../messages';
 
 export function Hero() {
   const t = useT();
@@ -50,7 +50,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-zinc-300 md:text-xl">
-            {t.hero.description({
+            {interp(t.hero.description, {
               polymarket: <span className="font-semibold text-brand-polymarket">Polymarket</span>,
               kalshi: <span className="font-semibold text-brand-kalshi">Kalshi</span>,
               limitless: <span className="font-semibold text-brand-limitless">Limitless</span>,
