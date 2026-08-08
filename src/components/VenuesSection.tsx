@@ -104,7 +104,7 @@ function VenueCard({ venue }: { venue: VenueMeta }) {
         </span>
       </div>
 
-      <div className="text-sm text-zinc-500">{venue.type[lang]}</div>
+      <div className="text-sm text-zinc-500">{(venue.type as Record<string, string>)[lang] ?? venue.type.en}</div>
 
       <div className="flex flex-col gap-2">
         <div className="text-[11px] uppercase tracking-wider text-zinc-600 font-semibold">{t.nav.strategies}</div>

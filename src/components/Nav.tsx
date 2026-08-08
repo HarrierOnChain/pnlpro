@@ -1,6 +1,7 @@
+import { useState, useRef, useEffect } from 'react';
 import { APP_URL, GITHUB_URL } from '../bots';
-import { useLang } from '../i18n';
-import { useT } from '../messages';
+import { useLang, LOCALES, localeOf } from '../i18n';
+import { useT, READY_LANGS } from '../messages';
 
 export function Nav() {
   const t = useT();
@@ -39,38 +40,61 @@ export function Nav() {
 
 function LangToggle() {
   const { lang, setLang } = useLang();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const cur = localeOf(lang);
+
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('click', onDoc);
+    return () => document.removeEventListener('click', onDoc);
+  }, []);
+
   return (
-    <div className="hidden sm:inline-flex items-center rounded-lg border border-border-subtle bg-bg-elevated p-0.5 text-xs font-semibold">
+    <div ref={ref} className="relative hidden sm:block">
       <button
         type="button"
-        onClick={() => setLang('en')}
-        aria-pressed={lang === 'en'}
-        className={`px-2.5 py-1 rounded-md transition-colors ${
-          lang === 'en' ? 'bg-bg-base text-white' : 'text-zinc-500 hover:text-zinc-200'
-        }`}
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label="Change language"
+        className="inline-flex items-center gap-1.5 rounded-lg border border-border-subtle bg-bg-elevated px-2.5 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white transition-colors"
       >
-        EN
+        <span aria-hidden>{cur.flag}</span>
+        <span className="hidden md:inline">{cur.native}</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+          <path d="M6 9l6 6 6-6" />
+        </svg>
       </button>
-      <button
-        type="button"
-        onClick={() => setLang('zh')}
-        aria-pressed={lang === 'zh'}
-        className={`px-2.5 py-1 rounded-md transition-colors ${
-          lang === 'zh' ? 'bg-bg-base text-white' : 'text-zinc-500 hover:text-zinc-200'
-        }`}
-      >
-        中文
-      </button>
-      <button
-        type="button"
-        onClick={() => setLang('ru')}
-        aria-pressed={lang === 'ru'}
-        className={`px-2.5 py-1 rounded-md transition-colors ${
-          lang === 'ru' ? 'bg-bg-base text-white' : 'text-zinc-500 hover:text-zinc-200'
-        }`}
-      >
-        РУ
-      </button>
+      {open && (
+        <ul
+          role="listbox"
+          className="absolute end-0 mt-2 max-h-[70vh] w-44 overflow-auto rounded-xl border border-border-subtle bg-bg-elevated p-1 shadow-2xl z-50"
+        >
+          {LOCALES.filter((l) => READY_LANGS.includes(l.code)).map((l) => (
+            <li key={l.code}>
+              <button
+                type="button"
+                role="option"
+                aria-selected={l.code === lang}
+                onClick={() => {
+                  setLang(l.code);
+                  setOpen(false);
+                }}
+                className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm transition-colors ${
+                  l.code === lang ? 'bg-bg-base text-white' : 'text-zinc-400 hover:bg-bg-base/60 hover:text-white'
+                }`}
+              >
+                <span aria-hidden>{l.flag}</span>
+                <span className="flex-1 text-start">{l.native}</span>
+                {l.code === lang && <span className="text-green-400">✓</span>}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
