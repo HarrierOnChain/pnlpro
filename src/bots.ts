@@ -34,6 +34,7 @@ export const bots: BotMeta[] = [
 
 export const TELEGRAM_URL = 'https://t.me/HarrierOnChain';
 export const APP_URL = 'https://app.pnlpro.fit';
+export const TOOLS_URL = 'https://tools.pnlpro.fit';
 export const GITHUB_OWNER = 'HarrierOnChain';
 export const GITHUB_URL = `https://github.com/${GITHUB_OWNER}/Prediction-Markets-Trading-Bot-Toolkits`;
 

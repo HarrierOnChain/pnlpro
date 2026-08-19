@@ -1,4 +1,4 @@
-import { TELEGRAM_URL, GITHUB_URL } from '../bots';
+import { TELEGRAM_URL, GITHUB_URL, TOOLS_URL } from '../bots';
 import { useT, interp } from '../messages';
 
 export function Footer() {
@@ -18,6 +18,7 @@ export function Footer() {
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-zinc-400">
             <a href="#strategies" className="hover:text-white transition-colors">{t.nav.strategies}</a>
             <a href="#engine" className="hover:text-white transition-colors">{t.nav.engine}</a>
+            <a href={TOOLS_URL} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Tools</a>
             <a href="#safety" className="hover:text-white transition-colors">{t.nav.safety}</a>
             <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">{t.nav.github}</a>
             <a href={TELEGRAM_URL} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">{t.nav.telegram}</a>

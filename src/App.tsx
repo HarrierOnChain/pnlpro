@@ -4,6 +4,7 @@ import { LiveSignalSection } from './components/LiveSignalSection';
 import { BotsSection } from './components/BotsSection';
 import { ManagedSection } from './components/ManagedSection';
 import { VenuesSection } from './components/VenuesSection';
+import { ToolsSection } from './components/ToolsSection';
 import { EngineSection } from './components/EngineSection';
 import { SafetySection } from './components/SafetySection';
 import { HowItWorksSection } from './components/HowItWorksSection';
@@ -20,6 +21,7 @@ export default function App() {
         <BotsSection />
         <ManagedSection />
         <VenuesSection />
+        <ToolsSection />
         <EngineSection />
         <SafetySection />
         <HowItWorksSection />
