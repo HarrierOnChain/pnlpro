@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { APP_URL, GITHUB_URL } from '../bots';
+import { GITHUB_URL } from '../bots';
 import { useLang, LOCALES, localeOf } from '../i18n';
 import { useT, READY_LANGS } from '../messages';
 
@@ -17,7 +17,6 @@ export function Nav() {
           <a href="#strategies" className="hover:text-white transition-colors">{t.nav.strategies}</a>
           <a href="#managed" className="hover:text-white transition-colors">{t.nav.managed}</a>
           <a href="#venues" className="hover:text-white transition-colors">{t.nav.venues}</a>
-          <a href="#tools" className="hover:text-white transition-colors">Tools</a>
           <a href="#engine" className="hover:text-white transition-colors">{t.nav.engine}</a>
           <a href="#safety" className="hover:text-white transition-colors">{t.nav.safety}</a>
           <a href="blog/" className="hover:text-white transition-colors">{t.nav.blog}</a>
@@ -26,12 +25,9 @@ export function Nav() {
 
         <div className="flex items-center gap-2">
           <LangToggle />
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="btn-secondary hidden sm:inline-flex" aria-label={t.nav.github}>
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="btn-secondary" aria-label={t.nav.github}>
             <GitHubIcon />
-            <span className="hidden lg:inline">{t.nav.github}</span>
-          </a>
-          <a href={APP_URL} className="btn-primary">
-            <span>Open App</span>
+            <span className="hidden sm:inline">{t.nav.github}</span>
           </a>
         </div>
       </nav>
