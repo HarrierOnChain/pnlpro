@@ -5,22 +5,13 @@ import {
   botById,
   accentClasses,
   TELEGRAM_URL,
-  type VenueGroup,
   type VenueMeta,
 } from '../bots';
 import { useLang } from '../i18n';
 import { useT } from '../messages';
 
-const GROUP_ORDER: VenueGroup[] = ['live', 'traditional', 'crypto'];
-
 export function VenuesSection() {
   const t = useT();
-
-  const groupTitle: Record<VenueGroup, string> = {
-    live: t.venues.groupLive,
-    traditional: t.venues.groupTraditional,
-    crypto: t.venues.groupCrypto,
-  };
 
   return (
     <section id="venues" className="py-24 border-t border-border-subtle">
@@ -31,25 +22,13 @@ export function VenuesSection() {
           <p className="text-lg text-zinc-400 leading-relaxed">{t.venues.description}</p>
         </div>
 
-        <div className="max-w-3xl mb-14 rounded-xl border border-amber-500/25 bg-amber-500/5 px-5 py-4 text-sm text-amber-200/90 leading-relaxed">
-          {t.venues.betaNote}
-        </div>
-
-        <div className="space-y-12">
-          {GROUP_ORDER.map((group) => {
-            const items = venues.filter((v) => v.group === group);
-            if (items.length === 0) return null;
-            return (
-              <div key={group}>
-                <h3 className="text-sm font-semibold text-zinc-300 uppercase tracking-wider mb-5">{groupTitle[group]}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {items.map((v) => (
-                    <VenueCard key={v.repo} venue={v} />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+        {/* One flat grid, no per-venue status. The engine is venue-agnostic and each
+            venue has its own repo; claiming a live/beta/roadmap state per venue on the
+            marketing site is a capability claim we don't want to make here. */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {venues.map((v) => (
+            <VenueCard key={v.repo} venue={v} />
+          ))}
         </div>
 
         <p className="mt-12 text-sm text-zinc-500 max-w-3xl">
@@ -66,16 +45,6 @@ export function VenuesSection() {
 function VenueCard({ venue }: { venue: VenueMeta }) {
   const t = useT();
   const { lang } = useLang();
-  const status = venue.status;
-  const statusLabel =
-    status === 'live' ? t.venues.statusLive : status === 'beta' ? t.venues.statusBeta : t.venues.statusRoadmap;
-  const pillClass =
-    status === 'live'
-      ? 'bg-emerald-500/10 text-emerald-400'
-      : status === 'beta'
-        ? 'bg-amber-500/10 text-amber-400'
-        : 'bg-zinc-500/10 text-zinc-400';
-  const dotClass = status === 'live' ? 'bg-emerald-400' : status === 'beta' ? 'bg-amber-400' : 'bg-zinc-500';
 
   return (
     <a
@@ -84,24 +53,16 @@ function VenueCard({ venue }: { venue: VenueMeta }) {
       rel="noreferrer"
       className="card group p-5 flex flex-col gap-4 hover:border-green-500/40 transition-colors"
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <img
-            src={venueLogo(venue.domain)}
-            alt=""
-            width={20}
-            height={20}
-            loading="lazy"
-            className="w-5 h-5 rounded shrink-0 bg-white/5"
-          />
-          <h4 className="font-bold text-white leading-tight truncate">{venue.name}</h4>
-        </div>
-        <span
-          className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[11px] font-semibold ${pillClass}`}
-        >
-          <span className={`w-1.5 h-1.5 rounded-full ${dotClass}`} />
-          {statusLabel}
-        </span>
+      <div className="flex items-center gap-2.5 min-w-0">
+        <img
+          src={venueLogo(venue.domain)}
+          alt=""
+          width={20}
+          height={20}
+          loading="lazy"
+          className="w-5 h-5 rounded shrink-0 bg-white/5"
+        />
+        <h4 className="font-bold text-white leading-tight truncate">{venue.name}</h4>
       </div>
 
       <div className="text-sm text-zinc-500">{(venue.type as Record<string, string>)[lang] ?? venue.type.en}</div>

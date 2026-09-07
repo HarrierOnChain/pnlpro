@@ -36,14 +36,9 @@ export const TELEGRAM_URL = 'https://t.me/HarrierOnChain';
 export const GITHUB_OWNER = 'HarrierOnChain';
 export const GITHUB_URL = `https://github.com/${GITHUB_OWNER}/Prediction-Markets-Trading-Bot-Toolkits`;
 
-export type VenueStatus = 'live' | 'beta' | 'roadmap';
-export type VenueGroup = 'live' | 'traditional' | 'crypto';
-
 export interface VenueMeta {
   repo: string; // exact spoke repo name under GITHUB_OWNER
   name: string;
-  group: VenueGroup;
-  status: VenueStatus;
   domain: string; // for favicon logo
   strategies: string[]; // bot ids that run on this venue (see `bots`)
   type: { en: string; zh: string; ru: string };
@@ -58,65 +53,65 @@ export const botById: Record<string, BotMeta> = Object.fromEntries(bots.map((b) 
 
 // Mirrors the hub README venue coverage tables + the per-venue spoke repos.
 export const venues: VenueMeta[] = [
-  { repo: 'Polymarket', name: 'Polymarket', group: 'live', status: 'live', domain: 'polymarket.com', strategies: ALL_STRATS,
+  { repo: 'Polymarket', name: 'Polymarket', domain: 'polymarket.com', strategies: ALL_STRATS,
     type: { en: 'Decentralized (Polygon / USDC)', zh: '去中心化（Polygon / USDC）', ru: 'Децентрализованная (Polygon / USDC)' } },
-  { repo: 'Kalshi', name: 'Kalshi', group: 'live', status: 'live', domain: 'kalshi.com',
+  { repo: 'Kalshi', name: 'Kalshi', domain: 'kalshi.com',
     strategies: ['cross-arb', 'resolution-sniper', 'orderbook-imbalance', 'market-making', 'directional-arb', 'spread-farming', 'sports'],
     type: { en: 'CFTC-regulated (US)', zh: '受 CFTC 监管（美国）', ru: 'Регулируется CFTC (США)' } },
-  { repo: 'Limitless-Exchange', name: 'Limitless', group: 'live', status: 'live', domain: 'limitless.exchange',
+  { repo: 'Limitless-Exchange', name: 'Limitless', domain: 'limitless.exchange',
     strategies: ['resolution-sniper', 'orderbook-imbalance', 'spread-farming'],
     type: { en: 'On-chain order book', zh: '链上订单簿', ru: 'Ончейн-стакан заявок' } },
 
-  { repo: 'Robinhood-Predictions', name: 'Robinhood Predictions', group: 'traditional', status: 'roadmap', domain: 'robinhood.com',
+  { repo: 'Robinhood-Predictions', name: 'Robinhood Predictions', domain: 'robinhood.com',
     strategies: ['directional-arb', 'sports'],
     type: { en: 'Brokerage-integrated', zh: '券商集成', ru: 'Брокерская интеграция' } },
-  { repo: 'Crypto.com-Predictions', name: 'Crypto.com Predictions', group: 'traditional', status: 'roadmap', domain: 'crypto.com',
+  { repo: 'Crypto.com-Predictions', name: 'Crypto.com Predictions', domain: 'crypto.com',
     strategies: ['btc-arb', 'directional-arb'],
     type: { en: 'Crypto-integrated', zh: '加密集成', ru: 'Крипто-интеграция' } },
-  { repo: 'OG.com', name: 'OG.com', group: 'traditional', status: 'roadmap', domain: 'og.com',
+  { repo: 'OG.com', name: 'OG.com', domain: 'og.com',
     strategies: ['sports', 'orderbook-imbalance', 'market-making'],
     type: { en: 'Social / multi-outcome', zh: '社交 / 多结果', ru: 'Социальная / мультиисход' } },
-  { repo: 'DraftKings-Predictions', name: 'DraftKings Predictions', group: 'traditional', status: 'roadmap', domain: 'draftkings.com',
+  { repo: 'DraftKings-Predictions', name: 'DraftKings Predictions', domain: 'draftkings.com',
     strategies: ['sports'],
     type: { en: 'Sports', zh: '体育', ru: 'Спорт' } },
-  { repo: 'FanDuel-Predicts', name: 'FanDuel Predicts', group: 'traditional', status: 'roadmap', domain: 'fanduel.com',
+  { repo: 'FanDuel-Predicts', name: 'FanDuel Predicts', domain: 'fanduel.com',
     strategies: ['sports'],
     type: { en: 'Sports', zh: '体育', ru: 'Спорт' } },
-  { repo: 'Fanatics-Markets', name: 'Fanatics Markets', group: 'traditional', status: 'roadmap', domain: 'fanatics.com',
+  { repo: 'Fanatics-Markets', name: 'Fanatics Markets', domain: 'fanatics.com',
     strategies: ['sports'],
     type: { en: 'Sports / entertainment', zh: '体育 / 娱乐', ru: 'Спорт / развлечения' } },
-  { repo: 'Interactive-Brokers-ForecastTrader', name: 'Interactive Brokers ForecastTrader', group: 'traditional', status: 'roadmap', domain: 'interactivebrokers.com',
+  { repo: 'Interactive-Brokers-ForecastTrader', name: 'Interactive Brokers ForecastTrader', domain: 'interactivebrokers.com',
     strategies: ['resolution-sniper', 'spread-farming', 'market-making'],
     type: { en: 'Financial events', zh: '金融事件', ru: 'Финансовые события' } },
-  { repo: 'PredictIt', name: 'PredictIt', group: 'traditional', status: 'beta', domain: 'predictit.org',
+  { repo: 'PredictIt', name: 'PredictIt', domain: 'predictit.org',
     strategies: ['cross-arb', 'resolution-sniper'],
     type: { en: 'Academic / US politics', zh: '学术 / 美国政治', ru: 'Академическая / политика США' } },
 
-  { repo: 'Drift-BET', name: 'Drift BET', group: 'live', status: 'live', domain: 'drift.trade',
+  { repo: 'Drift-BET', name: 'Drift BET', domain: 'drift.trade',
     strategies: ['btc-arb', 'orderbook-imbalance', 'market-making', 'whale-signal'],
     type: { en: 'Solana', zh: 'Solana', ru: 'Solana' } },
-  { repo: 'Azuro', name: 'Azuro', group: 'live', status: 'live', domain: 'azuro.org',
+  { repo: 'Azuro', name: 'Azuro', domain: 'azuro.org',
     strategies: ['sports', 'orderbook-imbalance'],
     type: { en: 'Decentralized protocol', zh: '去中心化协议', ru: 'Децентрализованный протокол' } },
-  { repo: 'Hedgehog-Markets', name: 'Hedgehog Markets', group: 'crypto', status: 'roadmap', domain: 'hedgehog.markets',
+  { repo: 'Hedgehog-Markets', name: 'Hedgehog Markets', domain: 'hedgehog.markets',
     strategies: ['copy-trading', 'directional-arb'],
     type: { en: 'Solana / social', zh: 'Solana / 社交', ru: 'Solana / социальная' } },
-  { repo: 'Augur', name: 'Augur', group: 'live', status: 'live', domain: 'augur.net',
+  { repo: 'Augur', name: 'Augur', domain: 'augur.net',
     strategies: ['resolution-sniper', 'orderbook-imbalance'],
     type: { en: 'Ethereum', zh: '以太坊', ru: 'Ethereum' } },
-  { repo: 'Zeitgeist', name: 'Zeitgeist', group: 'crypto', status: 'roadmap', domain: 'zeitgeist.pm',
+  { repo: 'Zeitgeist', name: 'Zeitgeist', domain: 'zeitgeist.pm',
     strategies: ['orderbook-imbalance', 'market-making'],
     type: { en: 'Polkadot', zh: 'Polkadot', ru: 'Polkadot' } },
-  { repo: 'Myriad-Markets', name: 'Myriad Markets', group: 'live', status: 'live', domain: 'myriad.markets',
+  { repo: 'Myriad-Markets', name: 'Myriad Markets', domain: 'myriad.markets',
     strategies: ['orderbook-imbalance', 'directional-arb'],
     type: { en: 'Crypto', zh: '加密', ru: 'Крипто' } },
-  { repo: 'Projection-Finance', name: 'Projection Finance', group: 'crypto', status: 'roadmap', domain: 'projection.finance',
+  { repo: 'Projection-Finance', name: 'Projection Finance', domain: 'projection.finance',
     strategies: ['directional-arb', 'spread-farming'],
     type: { en: 'Volatility / sims', zh: '波动率 / 模拟', ru: 'Волатильность / симуляции' } },
-  { repo: 'Better-Fan', name: 'Better Fan', group: 'crypto', status: 'roadmap', domain: 'better.fan',
+  { repo: 'Better-Fan', name: 'Better Fan', domain: 'better.fan',
     strategies: ['sports'],
     type: { en: 'Sports / esports', zh: '体育 / 电竞', ru: 'Спорт / киберспорт' } },
-  { repo: 'Manifold-Markets', name: 'Manifold Markets', group: 'crypto', status: 'beta', domain: 'manifold.markets',
+  { repo: 'Manifold-Markets', name: 'Manifold Markets', domain: 'manifold.markets',
     strategies: ['directional-arb'],
     type: { en: 'Play-money · consensus signal', zh: '虚拟币 · 共识信号', ru: 'Игровые деньги · сигнал консенсуса' } },
 ];
