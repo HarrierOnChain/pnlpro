@@ -1,4 +1,4 @@
-import { APP_URL, GITHUB_URL } from '../bots';
+import { GITHUB_URL } from '../bots';
 import { useT, interp } from '../messages';
 
 export function Hero() {
@@ -58,15 +58,11 @@ export function Hero() {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <a href={APP_URL} className="btn-primary px-6 py-3 text-base">
-              <span>{t.hero.ctaTelegram}</span>
-              <ArrowIcon />
-            </a>
             <a
               href={GITHUB_URL}
               target="_blank"
               rel="noreferrer"
-              className="btn-secondary px-6 py-3 text-base backdrop-blur-sm"
+              className="btn-primary px-6 py-3 text-base"
             >
               <GitHubIcon />
               <span>{t.hero.ctaGithub}</span>
@@ -96,14 +92,6 @@ function Stat({ label, value, unit }: { label: string; value: string; unit: stri
         <span className="text-xs text-zinc-500">{unit}</span>
       </div>
     </div>
-  );
-}
-
-function ArrowIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M5 12h14M13 6l6 6-6 6"/>
-    </svg>
   );
 }
 
