@@ -43,24 +43,9 @@ export function ManagedSection() {
           ))}
         </div>
 
-        {/* Plans */}
-        <h3 className="text-sm font-semibold text-zinc-300 uppercase tracking-wider mb-5">{m.plansTitle}</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {m.plans.map((p) => (
-            <div
-              key={p.name}
-              className={`card p-6 flex flex-col ${
-                p.highlight ? 'border-green-500/40 ring-1 ring-green-500/20' : ''
-              }`}
-            >
-              <div className="font-bold text-white text-lg">{p.name}</div>
-              <div className="mt-2 text-2xl font-bold text-white">{p.price}</div>
-              <div className="mt-1 text-sm text-zinc-400">{p.fee}</div>
-              <div className="mt-4 pt-4 border-t border-border-subtle text-sm text-zinc-400 leading-relaxed">{p.forWho}</div>
-            </div>
-          ))}
-        </div>
-        <p className="mt-5 text-sm text-zinc-500 max-w-3xl leading-relaxed">{m.plansNote}</p>
+        {/* Plans/pricing removed — the hosted service is not currently offered.
+            The copy was dropped from messages.tsx too (all locales), so nothing
+            price-related ships in the bundle. Restoring means re-adding both. */}
 
         <div className="mt-10">
           <a href={APP_URL} target="_blank" rel="noreferrer" className="btn-primary text-base px-7 py-3.5">
