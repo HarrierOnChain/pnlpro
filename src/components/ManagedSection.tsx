@@ -1,8 +1,34 @@
+import { useEffect, useState } from 'react';
 import { useT } from '../messages';
+
+const REPO = 'HarrierOnChain/Prediction-Markets-Trading-Bot-Toolkits';
+
+// The star count used to be typed into the i18n copy, so it silently went stale
+// (it read 359+ while the repo was at 433). Read it from GitHub instead and fall
+// back to the copy if the call fails or is rate-limited.
+function useStarCount() {
+  const [stars, setStars] = useState<number | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`https://api.github.com/repos/${REPO}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!cancelled && typeof d?.stargazers_count === 'number') setStars(d.stargazers_count);
+      })
+      .catch(() => {
+        /* offline or rate-limited — the i18n fallback stands */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return stars;
+}
 
 export function ManagedSection() {
   const t = useT();
   const m = t.managed;
+  const stars = useStarCount();
 
   return (
     <section id="managed" className="py-24 border-t border-border-subtle">
@@ -15,9 +41,11 @@ export function ManagedSection() {
 
         {/* By the numbers — honest, verifiable signals */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          {m.stats.map((s) => (
+          {m.stats.map((s, i) => (
             <div key={s.label} className="card p-5 text-center">
-              <div className="text-2xl md:text-3xl font-bold text-white">{s.value}</div>
+              <div className="text-2xl md:text-3xl font-bold text-white">
+                {i === 0 && stars !== null ? stars.toLocaleString() : s.value}
+              </div>
               <div className="mt-1 text-xs uppercase tracking-wider text-zinc-500">{s.label}</div>
             </div>
           ))}
